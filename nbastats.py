@@ -18,10 +18,14 @@ def get_stats(player_id):
     # Function to grab the games for the season specified for this instance is the 24/25 season
     gamelog = PlayerGameLog(player_id=player_id, season='2024-25')
     df = gamelog.get_data_frames()[0]
+    df_selected = df[['GAME_DATE', 'MATCHUP', 'PTS', 'REB', 'AST', 'MIN']]
+    df_selected.columns = ['Date', 'Matchup', 'Points', 'Rebounds', 'Assists', 'Minutes']
+    
+    return df_selected
     
 
 def main():
-    pname=input("Enter the players full name please:")
+    pname=input("Enter the players full name please: ")
 
     player=search_player(pname)
     #checks for player is a viable string in the season search
@@ -33,7 +37,7 @@ def main():
     try:
         stats=get_stats(player['id'])
         print(f"\n Stats for {player['full_name']})(Season 24-25):")
-        print(tabulate(stats,headers='keys', tablefmt='grid', showindex=False))
+        print(tabulate(stats,headers='keys', tablefmt='pretty', showindex=False))
         #tablemft=grid is just the style, and showindex just turns the row numbers off
 
     except Exception as e:
